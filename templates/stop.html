@@ -1,0 +1,20 @@
+<html>
+
+<head>
+
+    <title>{{stop}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
+
+</head>
+
+
+<body>
+    {{stop}}<br>
+    {% for message in get_flashed_messages()%}
+    <p>{{message}}</p>
+    {% endfor %}
+
+</body>
+
+</html>
