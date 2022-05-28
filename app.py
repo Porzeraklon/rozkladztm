@@ -85,8 +85,8 @@ def schedule(stop):
         flash('Opoźnienie: ' + str(delay) + 'min ' + str(delay_rest) + 's')
         flash('Przewidywany odjazd: ' + estimated)
         flash('================================')
-        return render_template("stop.html", stop=stop_name)
         
+    return render_template("stop.html", stop=stop_name)
             
         
         
