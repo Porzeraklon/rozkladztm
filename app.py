@@ -33,20 +33,19 @@ def home():
     
     if request.method == "POST":
 
-        stop = request.form["stop"]
-        stop_len = len(stop)
-        stop_code = str(stop[int(stop_len) - 2]) + str(stop[int(stop_len) - 1])
-        stop = stop[:-3:]
-        
+        stop_name = request.form["stop"]
+        stop_len = len(stop_name)
+        stop_code = str(stop_name[int(stop_len) - 2]) + str(stop_name[int(stop_len) - 1])
+        stop_name = stop_name[:-3:]
         
         stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
-            if str(data['stopName']) == stop:
+            if str(data['stopName']).lower() == stop_name.lower():
                 if str(data['stopCode']) == stop_code:
-                    stop = data['stopId']
+                    stop_number = data['stopId']
         
-        return redirect(url_for('schedule', stop=stop))
+        return redirect(url_for('schedule', stop=stop_number))
         
         
 @app.route("/<stop>")
