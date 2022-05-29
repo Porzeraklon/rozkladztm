@@ -1,49 +1,56 @@
 from flask import Flask, flash, redirect, session, url_for, render_template, request
+from datetime import date
+from requests import get
+from json import loads
+
 
 app = Flask(__name__)
 app.secret_key = "1234"
+
+today = date.today()
+today = today.strftime("%Y-%m-%d")
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
     
 
-    if request.method == "POST":
-        
-        return render_template("index.html")
-
-    
-
-    
     if request.method == "GET":
-        #PAMIETAJ CEPIE ZEBY POST I GET ZMIENIC
-
-        #stop = request.form['stop']
-        #stop_len = len(stop)
-        #stop_len = int(stop_len) - 1 
-        #stop_len_b = int(stop_len) - 1
-        #stop_nr = str(stop[stop_len_b]) + str(stop[stop_len])
-        #i = 0
-        #while i < stop_len - 2:
-        #    stop_final = stop[i]
-        #stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
-        #response_stops = loads(stops)
-        #for one in response_stops:
-        #    if one['stopName'] == stop_final:
-        #        if one['stopCode'] == stop_nr:
-        #            stop = one['stopId']
-        #            print(stop)
         
-        return render_template("index.html")
+        stops_list = []
+        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+        response_stops = loads(stops)
+        for data in response_stops[today]['stops']:
+            if data['stopName'] != None:
+                stop_name = data['stopName']
+                if data['stopCode'] != None:
+                    stop_code = data['stopCode']
+                stop_name = str(stop_name) + ' ' + str(stop_code)
+                stops_list.append(stop_name)
+        return render_template("index.html", stops_list=stops_list)
+
+    
+
+    
+    if request.method == "POST":
+
+        stop = request.form["stop"]
+        stop_len = len(stop)
+        stop_code = str(stop[int(stop_len) - 2]) + str(stop[int(stop_len) - 1])
+        stop = stop[:-3:]
+        
+        
+        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+        response_stops = loads(stops)
+        for data in response_stops[today]['stops']:
+            if str(data['stopName']) == stop:
+                if str(data['stopCode']) == stop_code:
+                    stop = data['stopId']
+        
+        return redirect(url_for('schedule', stop=stop))
         
         
 @app.route("/<stop>")
 def schedule(stop):
-    from datetime import date
-    from requests import get
-    from json import loads
-
-    today = date.today()
-    today = today.strftime("%Y-%m-%d")
 
     stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
     response_stops = loads(stops)

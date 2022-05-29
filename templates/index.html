@@ -10,22 +10,17 @@
 
 
 <body>
-    
 
     <form action="#" method="post">
-        <!--
         <p>Przystanek:</p>
         <p><input list="stop" name="stop"></p>
         <datalist id="stop">
-        <option value="Zamenhofa 01">
-        <option value="Zamenhofa 02">
-        <option value="Życzliwa 01">
-        <option value="Życzliwa 02">
+        {% for stop in stops_list %}
+        <option value="{{stop}}">
+        {% endfor %}
         </datalist>
         <p><input type="submit" value="Wybierz" id="submit"></p>
-        -->
     </form>
-    <H1>tu cos bedzie</H1>
 
 </body>
 
