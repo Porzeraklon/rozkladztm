@@ -9,26 +9,26 @@ app.secret_key = "1234"
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
+zone = "Gdańsk"
+
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
     
-
     if request.method == "GET":
-        
+
         stops_list = []
         stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
+             
+
         for data in response_stops[today]['stops']:
-            if data['stopName'] != None:
+            if data['stopName'] != None and data['stopCode'] != None and str(data['zoneName']) == zone:
                 stop_name = data['stopName']
-                if data['stopCode'] != None:
-                    stop_code = data['stopCode']
+                stop_code = data['stopCode']
                 stop_name = str(stop_name) + ' ' + str(stop_code)
                 stops_list.append(stop_name)
         return render_template("index.html", stops_list=stops_list)
-
-    
 
     
     if request.method == "POST":
@@ -41,12 +41,11 @@ def home():
         stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
-            if str(data['stopName']).lower() == stop_name.lower():
+            if str(data['stopName']).lower() == stop_name.lower() and str(data['zoneName']) == zone:
                 if str(data['stopCode']) == stop_code:
                     stop_number = data['stopId']
         
         return redirect(url_for('schedule', stop=stop_number))
-        
         
 @app.route("/<stop>")
 def schedule(stop):
@@ -77,10 +76,12 @@ def schedule(stop):
         if int(theoretical_time) >= 24:
             theoretical_time = int(theoretical_time) - 24
         theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
-        delay_rest = ''
         if str(delay) != 'None':
             delay_rest = int(delay) % 60
             delay = int(delay) - int(delay_rest)
+            #napraw przyspieszenie
+            #if delay < 60:
+
             delay = int(delay) / 60
             delay = (int(delay))
 
@@ -91,7 +92,7 @@ def schedule(stop):
         flash('Opoźnienie: ' + str(delay) + 'min ' + str(delay_rest) + 's')
         flash('Przewidywany odjazd: ' + estimated)
         flash('================================')
-        
+            
     return render_template("stop.html", stop=stop_name)
             
         
