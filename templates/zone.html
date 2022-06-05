@@ -1,0 +1,27 @@
+<html>
+
+<head>
+
+    <title>Zone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
+
+</head>
+
+
+<body>
+
+    <form action="#" method="post">
+        <p>Strefa:</p>
+        <p><input list="zone" name="zone"></p>
+        <datalist id="zone">
+        {% for zone in zone_list %}
+        <option value="{{zone}}">
+        {% endfor %}
+        </datalist>
+        <p><input type="submit" value="Wybierz" id="submit"></p>
+    </form>
+
+</body>
+
+</html>

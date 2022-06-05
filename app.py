@@ -9,11 +9,29 @@ app.secret_key = "1234"
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
-zone = "Gdańsk"
-
+        
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
+
+    if request.method == "GET":
+        
+        zone_list = []
+        zone_list_fix = []
+        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+        response_stops = loads(stops)
+        for data in response_stops[today]['stops']:
+            if data['zoneName'] != None:
+                zone_list.append(data['zoneName'])
+        zone_list_fix = set(zone_list)
+        return render_template("zone.html", zone_list=zone_list_fix)
+
+    if request.method == "POST":
+        zone = request.form["zone"]
+        return redirect(url_for('zone_site', zone=zone))
+
+@app.route("/<zone>", methods=['POST', 'GET'])
+def zone_site(zone):
     
     if request.method == "GET":
 
@@ -23,7 +41,7 @@ def home():
              
 
         for data in response_stops[today]['stops']:
-            if data['stopName'] != None and data['stopCode'] != None and str(data['zoneName']) == zone:
+            if data['stopName'] != None and data['stopCode'] != None and str(data['zoneName']).lower() == str(zone).lower():
                 stop_name = data['stopName']
                 stop_code = data['stopCode']
                 stop_name = str(stop_name) + ' ' + str(stop_code)
@@ -36,19 +54,19 @@ def home():
         stop_name = request.form["stop"]
         stop_len = len(stop_name)
         stop_code = str(stop_name[int(stop_len) - 2]) + str(stop_name[int(stop_len) - 1])
-        stop_name = stop_name[:-3:]
+        stop = stop_name[:-3:]
         
         stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
-            if str(data['stopName']).lower() == stop_name.lower() and str(data['zoneName']) == zone:
+            if str(data['stopName']).lower() == str(stop).lower() and str(data['zoneName']).lower() == str(zone).lower():
                 if str(data['stopCode']) == stop_code:
-                    stop_number = data['stopId']
+                    stop = data['stopId']
         
-        return redirect(url_for('schedule', stop=stop_number))
-        
-@app.route("/<stop>")
-def schedule(stop):
+        return redirect(url_for('schedule', stop=stop, zone=zone))
+
+@app.route("/<zone>/<stop>")
+def schedule(stop, zone):
 
     stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
     response_stops = loads(stops)
@@ -93,8 +111,7 @@ def schedule(stop):
         flash('Przewidywany odjazd: ' + estimated)
         flash('================================')
             
-    return render_template("stop.html", stop=stop_name)
-            
+    return render_template("stop.html", stop=stop_name)            
         
         
 
