@@ -94,6 +94,7 @@ def schedule(stop, zone):
         if int(theoretical_time) >= 24:
             theoretical_time = int(theoretical_time) - 24
         theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
+        delay_rest = ''
         if str(delay) != 'None':
             delay_rest = int(delay) % 60
             delay = int(delay) - int(delay_rest)
