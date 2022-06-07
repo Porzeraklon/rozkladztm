@@ -82,18 +82,6 @@ def schedule(stop, zone):
         _id = data['id']
         estimated = data['estimatedTime']
         delay = data['delayInSeconds']
-        headsign = data['headsign']
-        route = data['routeId']
-        status = data['status']
-        theoretical = data['theoreticalTime']
-        estimated_time = int(estimated[11]) * 10 + int(estimated[12]) + 2
-        if int(estimated_time) >= 24:
-            estimated_time = int(estimated_time) - 24
-        estimated = str(estimated_time) + str(estimated[13]) + str(estimated[14]) + str(estimated[15]) + str(estimated[16]) + str(estimated[17]) + str(estimated[18])
-        theoretical_time = int(theoretical[11]) * 10 + int(theoretical[12]) + 2
-        if int(theoretical_time) >= 24:
-            theoretical_time = int(theoretical_time) - 24
-        theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
         delay_rest = ''
         delay_status = 'Brak opóźnień'
         if delay != None:
@@ -121,11 +109,31 @@ def schedule(stop, zone):
                 delay = str(delay) + ' min ' + str(delay_rest) + ' s'
         else:
             delay = ''
-        
+        headsign = data['headsign']
+        route = data['routeId']
+        route = str(route)
+        if int(route) > 400 < 500:
+            route_night_second = str(route[-1])
+            route_night_first = str(route[-2])
+            if route_night_first == '0':
+                route = 'N' + str(route_night_second)
+            else:
+                route = 'N' + str(route_night_first) + str(route_night_second)
+        status = data['status']
         if str(status) == 'REALTIME':
             status = 'W drodze'
         if str(status) == 'SCHEDULED':
             status = 'Zaplanowany'
+        theoretical = data['theoreticalTime']
+        estimated_time = int(estimated[11]) * 10 + int(estimated[12]) + 2
+        if int(estimated_time) >= 24:
+            estimated_time = int(estimated_time) - 24
+        estimated = str(estimated_time) + str(estimated[13]) + str(estimated[14]) + str(estimated[15]) + str(estimated[16]) + str(estimated[17]) + str(estimated[18])
+        theoretical_time = int(theoretical[11]) * 10 + int(theoretical[12]) + 2
+        if int(theoretical_time) >= 24:
+            theoretical_time = int(theoretical_time) - 24
+        theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
+        
 
         flash('================================')
         flash(str(route))
@@ -136,7 +144,7 @@ def schedule(stop, zone):
         flash('Planowany przyjazd: ' + theoretical)
         flash('================================')
             
-    return render_template("stop.html", stop=stop_name)            
+    return render_template("stop.html", stop=stop_name, zone=zone)            
         
         
 
