@@ -95,21 +95,45 @@ def schedule(stop, zone):
             theoretical_time = int(theoretical_time) - 24
         theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
         delay_rest = ''
-        if str(delay) != 'None':
-            delay_rest = int(delay) % 60
-            delay = int(delay) - int(delay_rest)
+        delay_status = 'Brak opóźnień'
+        if delay != None:
             #napraw przyspieszenie
-            #if delay < 60:
-
-            delay = int(delay) / 60
-            delay = (int(delay))
+            if delay < 0:
+                delay_status = 'Przyśpieszenie: '
+                delay = -delay + 1
+                delay_rest = int(delay) % 60
+                delay = int(delay) - int(delay_rest)
+                delay = int(delay) / 60
+                delay = (int(delay))
+                delay = str(delay) + ' min ' + str(delay_rest) + ' s'
+            elif delay < 60 and delay > 0:
+                delay_status = 'Opóźnienie: '
+                delay = '0 min ' + str(delay) + ' s'
+            elif delay == 60:
+                delay_status = 'Opóźnienie: '
+                delay = '1 min 0 s'
+            elif delay > 60:
+                delay_status = 'Opóźnienie: '
+                delay_rest = int(delay) % 60
+                delay = int(delay) - int(delay_rest)
+                delay = int(delay) / 60
+                delay = (int(delay))
+                delay = str(delay) + ' min ' + str(delay_rest) + ' s'
+        else:
+            delay = ''
+        
+        if str(status) == 'REALTIME':
+            status = 'W drodze'
+        if str(status) == 'SCHEDULED':
+            status = 'Zaplanowany'
 
         flash('================================')
-        flash('Autobus nr: ' + str(route))
+        flash(str(route))
         flash('Kierunek: ' + headsign)
-        flash('Planowany odjazd: ' + theoretical)
-        flash('Opoźnienie: ' + str(delay) + 'min ' + str(delay_rest) + 's')
-        flash('Przewidywany odjazd: ' + estimated)
+        flash('Status: ' + status)
+        flash('Przewidywany przyjazd: ' + estimated)
+        flash(str(delay_status) + str(delay))
+        flash('Planowany przyjazd: ' + theoretical)
         flash('================================')
             
     return render_template("stop.html", stop=stop_name)            
