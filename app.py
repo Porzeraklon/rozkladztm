@@ -1,3 +1,11 @@
+#TODO LIST
+#1. Zmien to logo cepie - DONE
+#2. Rozklad lini a nie przystanku
+#3. Dodanie linków (rozklad lini itp.)
+#4. Dodaj adsense
+#5. Nie wygladanie jak gowno
+
+
 from flask import Flask, flash, redirect, session, url_for, render_template, request
 from datetime import date
 from requests import get
@@ -84,8 +92,8 @@ def schedule(stop, zone):
         delay = data['delayInSeconds']
         delay_rest = ''
         delay_status = 'Brak opóźnień'
-        if delay != None:
-            #napraw przyspieszenie
+        if delay != None:     
+   
             if delay < 0:
                 delay_status = 'Przyśpieszenie: '
                 delay = -delay + 1
@@ -144,7 +152,7 @@ def schedule(stop, zone):
         flash('Planowany przyjazd: ' + theoretical)
         flash('================================')
             
-    return render_template("stop.html", stop=stop_name, zone=zone)            
+    return render_template("stop.html", stop=stop_name, zone=zone)
         
         
 
