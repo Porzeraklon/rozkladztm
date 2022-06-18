@@ -1,9 +1,11 @@
 #TODO LIST
 #1. Zmien to logo cepie - DONE
-#2. Rozklad lini a nie przystanku
-#3. Dodanie linków (rozklad lini itp.)
-#4. Dodaj adsense
-#5. Nie wygladanie jak gowno
+#2. Dodaj lapka - DONE
+#3. Rozklad lini a nie przystanku
+#4. Dodanie linków (rozklad lini itp.)
+#5. Dodaj adsense
+#6. Nie wygladanie jak gowno
+
 
 
 from flask import Flask, flash, redirect, session, url_for, render_template, request
