@@ -59,6 +59,7 @@ def zone_site(zone):
                 stop_code = data['stopCode']
                 stop_name = str(stop_name) + ' ' + str(stop_code)
                 stops_list.append(stop_name)
+        stops_list.sort()
         return render_template("index.html", stops_list=stops_list)
 
     
