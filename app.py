@@ -34,6 +34,7 @@ def home():
             if data['zoneName'] != None:
                 zone_list.append(data['zoneName'])
         zone_list_fix = set(zone_list)
+        zone_list_fix = zone_list_fix.sort()
         return render_template("zone.html", zone_list=zone_list_fix)
 
     if request.method == "POST":
