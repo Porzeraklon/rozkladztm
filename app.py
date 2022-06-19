@@ -3,7 +3,7 @@
 #2. Dodaj lapka - DONE
 #3. Rozklad lini a nie przystanku
 #4. Dodanie linków (rozklad lini itp.)
-#5. Dodaj adsense
+#5. Dodaj adsense - DONE (kinda)
 #6. Nie wygladanie jak gowno
 
 
@@ -36,7 +36,6 @@ def home():
         zone_list_fix = set(zone_list)
         zone_list_fix = list(zone_list_fix)
         zone_list_fix.sort()
-        print(zone_list_fix)
         return render_template("zone.html", zone_list=zone_list_fix)
 
     if request.method == "POST":
