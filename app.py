@@ -91,7 +91,19 @@ def schedule(stop, zone):
 
     routs = get('https://ckan2.multimediagdansk.pl/departures?stopId=' + str(stop)).text
     response_routs = loads(routs)
+    objnum = 0
+    tour_list = []
+    class Tour:
+        def __init__(self, route, headsign, status, estimated, delay, theoretical):
+            self.route = route
+            self.headsign = headsign
+            self.status = status
+            self.estimated = estimated
+            self.delay = delay
+            self.theoretical = theoretical
+
     for data in response_routs['departures']:
+        objnum = objnum + 1
         _id = data['id']
         estimated = data['estimatedTime']
         delay = data['delayInSeconds']
@@ -147,17 +159,16 @@ def schedule(stop, zone):
             theoretical_time = int(theoretical_time) - 24
         theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
         
-
-        flash('================================')
-        flash(str(route))
-        flash('Kierunek: ' + headsign)
-        flash('Status: ' + status)
-        flash('Przewidywany przyjazd: ' + estimated)
-        flash(str(delay_status) + str(delay))
-        flash('Planowany przyjazd: ' + theoretical)
-        flash('================================')
-            
-    return render_template("stop.html", stop=stop_name, zone=zone)
+        route = str(route)
+        headsign = 'Kierunek: ' + headsign
+        status = 'Status: ' + status
+        estimated = 'Przewidywany przyjazd: ' + estimated
+        delay = str(delay_status) + str(delay)
+        theoretical = 'Planowany przyjazd: ' + theoretical
+        
+        tour_list.append(Tour(route, headsign, status, estimated, delay, theoretical))
+  
+    return render_template("stop.html", stop=stop_name, zone=zone, tour_list=tour_list)
         
         
 

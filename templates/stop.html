@@ -12,11 +12,19 @@
 
 
 <body>
-    {{stop}}<br>
-    {% for message in get_flashed_messages()%}
-    <p>{{message}}</p>
-    {% endfor %}
-
+    <div class="grid-wrapper">
+        <div class="grid-stop">{{stop}}</div>
+        {% for obj in tour_list%}
+        <div class="grid-item">
+        {{obj.route}}<br>
+        {{obj.headsign}}<br>
+        {{obj.status}}<br>
+        {{obj.estimated}}<br>
+        {{obj.delay}}<br>
+        {{obj.theoretical}}<br>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 
 </html>
