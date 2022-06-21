@@ -1,6 +1,6 @@
 *, *::before, *::after {
     box-sizing: border-box;
-    color:gainsboro;
+    color:white;
 }
 
 body {
