@@ -24,6 +24,16 @@ body {
     font-size: 100%;
 }
 
+.gird-ad-left {
+    grid-column: 1;
+    grid-row: 1 / 4;
+}
+
+.gird-ad-right {
+    grid-column: 3;
+    grid-row: 1 / 4;
+}
+
 .grid-wrapper {
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
