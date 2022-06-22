@@ -36,7 +36,7 @@ body {
 
 .grid-wrapper {
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-columns: 1fr 6fr 1fr;
     grid-auto-rows: minmax(0, auto);
     gap: 15px;
     
