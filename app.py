@@ -10,6 +10,7 @@
 
 from flask import Flask, flash, redirect, session, url_for, render_template, request
 from datetime import date
+import datetime
 from requests import get
 from json import loads
 
@@ -80,6 +81,9 @@ def zone_site(zone):
 
 @app.route("/<zone>/<stop>")
 def schedule(stop, zone):
+
+    time = datetime.datetime.now()
+    time = time.strftime("%X")
 
     stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
     response_stops = loads(stops)
@@ -168,7 +172,7 @@ def schedule(stop, zone):
         
         tour_list.append(Tour(route, headsign, status, estimated, delay, theoretical))
   
-    return render_template("stop.html", stop=stop_name, zone=zone, tour_list=tour_list)
+    return render_template("stop.html", stop=stop_name, zone=zone, tour_list=tour_list, time=time)
         
         
 

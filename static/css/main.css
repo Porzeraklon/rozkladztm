@@ -11,6 +11,7 @@ body {
 
 .grid-stop {
     text-align: center;
+    grid-row: 1 / 1;
     grid-column: 2;
     background-color: #2b282a;
     padding: 20px;
@@ -24,20 +25,20 @@ body {
     font-size: 100%;
 }
 
-.gird-ad-left {
+.ad-left {
     grid-column: 1;
-    grid-row: 1 / 4;
+    grid-row: 2 / 4;
 }
 
-.gird-ad-right {
+.ad-right {
     grid-column: 3;
-    grid-row: 1 / 4;
+    grid-row: 2 / 4;
 }
 
 .grid-wrapper {
     display: grid;
     grid-template-columns: 1fr 6fr 1fr;
-    grid-auto-rows: minmax(0, auto);
+    grid-auto-rows: minmax(0px, 148px);
     gap: 15px;
     
 }
