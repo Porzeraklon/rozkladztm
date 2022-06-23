@@ -83,7 +83,11 @@ def zone_site(zone):
 def schedule(stop, zone):
 
     time = datetime.datetime.now()
-    time = time.strftime("%X")
+    time = str(time.strftime("%X"))
+    time_hour = int(str(time[0]) + str(time[1])) + 2
+    if time_hour > 24:
+        time_hour = time_hour - 24
+    time = str(time_hour) + str(time[2]) + str(time[3]) + str(time[4]) + str(time[5]) + str(time[6]) + str(time[7])
 
     stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
     response_stops = loads(stops)
