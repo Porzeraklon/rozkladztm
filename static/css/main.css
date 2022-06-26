@@ -31,12 +31,16 @@ body {
     grid-column: 1;
 }
 
+.grid-box {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
 .grid-wrapper {
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: minmax(148px, auto);
     gap: 15px;
-    
 }
 
 p {

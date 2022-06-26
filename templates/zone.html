@@ -16,17 +16,19 @@
 
 
 <body class="body-choice">
-
-    <form action="#" method="post">
-        <p class="form-choice">Strefa:</p>
-        <p><input class="text-input" list="zone" name="zone"></p>
-        <datalist id="zone">
-        {% for zone in zone_list %}
-        <option value="{{zone}}">
-        {% endfor %}
-        </datalist>
-        <p><input type="submit" value="Wybierz" id="submit"></p>
-    </form>
+    
+    <div class="grid-box">
+        <form action="#" method="post">
+            <p class="form-choice">Strefa:</p>
+            <p><input class="text-input" list="zone" name="zone"></p>
+            <datalist id="zone">
+            {% for zone in zone_list %}
+            <option value="{{zone}}">
+            {% endfor %}
+            </datalist>
+            <p><input type="submit" value="Wybierz" id="submit"></p>
+        </form>
+    </div>
 
 </body>
 
