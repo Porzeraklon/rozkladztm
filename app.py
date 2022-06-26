@@ -87,7 +87,7 @@ def schedule(stop, zone):
     time_hour = int(str(time[0]) + str(time[1])) + 2
     if time_hour > 24:
         time_hour = time_hour - 24
-    elif time_hour == 23:
+    elif time_hour == 24:
         time_hour = '00'
     time = str(time_hour) + str(time[2]) + str(time[3]) + str(time[4]) + str(time[5]) + str(time[6]) + str(time[7])
 
