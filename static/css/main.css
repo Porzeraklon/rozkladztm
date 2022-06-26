@@ -4,7 +4,7 @@
 }
 
 body {
-    padding: 25px;
+    padding: 10px;
     margin: 0;
     background: #070707;
 }
@@ -25,20 +25,14 @@ body {
     font-size: 100%;
 }
 
-.ad-left {
-    grid-column: 1;
-    grid-row: 2 / 4;
-}
-
-.ad-right {
-    grid-column: 3;
-    grid-row: 2 / 4;
+.ad-bottom {
+    grid-column: 2;
 }
 
 .grid-wrapper {
     display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
-    grid-auto-rows: minmax(0px, 148px);
+    grid-template-columns: 1fr 8fr 1fr;
+    grid-auto-rows: minmax(148px, auto);
     gap: 15px;
     
 }
