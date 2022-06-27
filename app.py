@@ -42,7 +42,6 @@ def home():
 
     if request.method == "POST":
         zone = request.form["zone"]
-        print(zone_list_fix)
         if zone in zone_list_fix:
             return redirect(url_for('zone_site', zone=zone))
         else:

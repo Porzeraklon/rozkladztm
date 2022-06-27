@@ -2,7 +2,7 @@
 
 <head>
 
-    <title>Zone</title>
+    <title>Strefa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
     <style>
@@ -27,10 +27,10 @@
             {% endfor %}
             </datalist>
             <p><input type="submit" value="Wybierz" id="submit"></p>
+            {% for message in get_flashed_messages()%}
+            <p class="error">{{message}}</p>
+            {% endfor %}
         </form>
-        {% for message in get_flashed_messages()%}
-        <p class="error">{{message}}</p>
-        {% endfor %}
     </div>
 
 </body>
