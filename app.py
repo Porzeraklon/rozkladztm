@@ -28,6 +28,7 @@ def home():
     if request.method == "GET":
         
         zone_list = []
+        global zone_list_fix
         zone_list_fix = []
         stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
@@ -41,24 +42,34 @@ def home():
 
     if request.method == "POST":
         zone = request.form["zone"]
-        return redirect(url_for('zone_site', zone=zone))
+        print(zone_list_fix)
+        if zone in zone_list_fix:
+            return redirect(url_for('zone_site', zone=zone))
+        else:
+            flash('Blad! Nie ma takiej strefy!')
+            return render_template('zone.html', zone_list=zone_list_fix)
 
 @app.route("/<zone>", methods=['POST', 'GET'])
 def zone_site(zone):
     
     if request.method == "GET":
 
+        global stops_list
         stops_list = []
+        global stops_id_list
+        stops_id_list = []
         stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
              
 
         for data in response_stops[today]['stops']:
             if data['stopName'] != None and data['stopCode'] != None and str(data['zoneName']).lower() == str(zone).lower():
+                stop_id = data['stopId']
                 stop_name = data['stopName']
                 stop_code = data['stopCode']
                 stop_name = str(stop_name) + ' ' + str(stop_code)
                 stops_list.append(stop_name)
+                stops_id_list.append(stop_id)
         stops_list.sort()
         return render_template("index.html", stops_list=stops_list)
 
@@ -76,8 +87,11 @@ def zone_site(zone):
             if str(data['stopName']).lower() == str(stop).lower() and str(data['zoneName']).lower() == str(zone).lower():
                 if str(data['stopCode']) == stop_code:
                     stop = data['stopId']
-        
-        return redirect(url_for('schedule', stop=stop, zone=zone))
+        if stop in stops_id_list:
+            return redirect(url_for('schedule', stop=stop, zone=zone))
+        else:
+            flash('Blad! Nie ma takiego przystanku!')
+            return render_template('index.html', stops_list=stops_list)
 
 @app.route("/<zone>/<stop>")
 def schedule(stop, zone):
