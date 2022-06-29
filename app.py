@@ -1,13 +1,3 @@
-#TODO LIST
-#1. Zmien to logo cepie - DONE
-#2. Dodaj lapka - DONE
-#3. Rozklad lini a nie przystanku
-#4. Dodanie linków (rozklad lini itp.)
-#5. Dodaj adsense - DONE (kinda)
-#6. Nie wygladanie jak gowno
-
-
-
 from flask import Flask, flash, redirect, session, url_for, render_template, request
 from datetime import date
 import datetime
@@ -20,7 +10,7 @@ app.secret_key = "1234"
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
-        
+
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
