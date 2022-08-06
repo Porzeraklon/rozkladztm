@@ -34,11 +34,7 @@ def home():
 
     if request.method == "POST":
         zone = request.form["zone"]
-        if zone in zone_list_fix:
-            return redirect(url_for('zone_site', zone=zone))
-        else:
-            flash('Blad! Nie ma takiej strefy!')
-            return render_template('zone.html', zone_list=zone_list_fix)
+        return redirect(url_for('zone_site', zone=zone))
 
 @app.route("/<zone>", methods=['POST', 'GET'])
 def zone_site(zone):
@@ -78,11 +74,8 @@ def zone_site(zone):
             if str(data['stopName']).lower() == str(stop).lower() and str(data['zoneName']).lower() == str(zone).lower():
                 if str(data['stopCode']) == stop_code:
                     stop = data['stopId']
-        if stop in stops_id_list:
-            return redirect(url_for('schedule', stop=stop, zone=zone))
-        else:
-            flash('Blad! Nie ma takiego przystanku!')
-            return render_template('index.html', stops_list=stops_list)
+        
+        return redirect(url_for('schedule', stop=stop, zone=zone))
 
 @app.route("/<zone>/<stop>")
 def schedule(stop, zone):
