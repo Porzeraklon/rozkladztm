@@ -1,28 +1,29 @@
 #heroku u good?
-
+#updated ztm api
+ 
 from flask import Flask, flash, redirect, session, url_for, render_template, request
 from datetime import date
 import datetime
 from requests import get
 from json import loads
-
-
+ 
+ 
 app = Flask(__name__)
 app.secret_key = "1234"
-
+ 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
-
-
+ 
+ 
 @app.route("/", methods=['POST', 'GET'])
 def home():
-
+ 
     if request.method == "GET":
-        
+ 
         zone_list = []
         global zone_list_fix
         zone_list_fix = []
-        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+        stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
             if data['zoneName'] != None:
@@ -31,24 +32,24 @@ def home():
         zone_list_fix = list(zone_list_fix)
         zone_list_fix.sort()
         return render_template("zone.html", zone_list=zone_list_fix)
-
+ 
     if request.method == "POST":
         zone = request.form["zone"]
         return redirect(url_for('zone_site', zone=zone))
-
+ 
 @app.route("/<zone>", methods=['POST', 'GET'])
 def zone_site(zone):
-    
+ 
     if request.method == "GET":
-
+ 
         global stops_list
         stops_list = []
         global stops_id_list
         stops_id_list = []
-        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+        stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
         response_stops = loads(stops)
-             
-
+ 
+ 
         for data in response_stops[today]['stops']:
             if data['stopName'] != None and data['stopCode'] != None and str(data['zoneName']).lower() == str(zone).lower():
                 stop_id = data['stopId']
@@ -59,27 +60,27 @@ def zone_site(zone):
                 stops_id_list.append(stop_id)
         stops_list.sort()
         return render_template("index.html", stops_list=stops_list)
-
-    
+ 
+ 
     if request.method == "POST":
-
+ 
         stop_name = request.form["stop"]
         stop_len = len(stop_name)
         stop_code = str(stop_name[int(stop_len) - 2]) + str(stop_name[int(stop_len) - 1])
         stop = stop_name[:-3:]
-        
-        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+ 
+        stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
             if str(data['stopName']).lower() == str(stop).lower() and str(data['zoneName']).lower() == str(zone).lower():
                 if str(data['stopCode']) == stop_code:
                     stop = data['stopId']
-        
+ 
         return redirect(url_for('schedule', stop=stop, zone=zone))
-
+ 
 @app.route("/<zone>/<stop>")
 def schedule(stop, zone):
-
+ 
     time = datetime.datetime.now()
     time = str(time.strftime("%X"))
     time_hour = int(str(time[0]) + str(time[1])) + 2
@@ -88,16 +89,16 @@ def schedule(stop, zone):
     elif time_hour == 24:
         time_hour = '00'
     time = str(time_hour) + str(time[2]) + str(time[3]) + str(time[4]) + str(time[5]) + str(time[6]) + str(time[7])
-
-    stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
+ 
+    stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
     response_stops = loads(stops)
     for data in response_stops[today]['stops']:
         if data['stopId'] == int(stop):
             stop_name = data['stopName']
             stop_code = data['stopCode']
             stop_name = str(stop_name) + ' ' + str(stop_code)
-
-    routs = get('https://ckan2.multimediagdansk.pl/departures?stopId=' + str(stop)).text
+ 
+    routs = get('http://87.98.237.99:88/delays?stopId=' + str(stop)).text
     response_routs = loads(routs)
     objnum = 0
     tour_list = []
@@ -109,7 +110,7 @@ def schedule(stop, zone):
             self.estimated = estimated
             self.delay = delay
             self.theoretical = theoretical
-
+ 
     for data in response_routs['departures']:
         objnum = objnum + 1
         _id = data['id']
@@ -118,7 +119,7 @@ def schedule(stop, zone):
         delay_rest = ''
         delay_status = 'Brak opóźnień'
         if delay != None:     
-   
+ 
             if delay < 0:
                 delay_status = 'Przyśpieszenie: '
                 delay = -delay + 1
@@ -166,20 +167,20 @@ def schedule(stop, zone):
         if int(theoretical_time) >= 24:
             theoretical_time = int(theoretical_time) - 24
         theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
-        
+ 
         route = str(route)
         headsign = 'Kierunek: ' + headsign
         status = 'Status: ' + status
         estimated = 'Przewidywany przyjazd: ' + estimated
         delay = str(delay_status) + str(delay)
         theoretical = 'Planowany przyjazd: ' + theoretical
-        
+ 
         tour_list.append(Tour(route, headsign, status, estimated, delay, theoretical))
-  
+ 
     return render_template("stop.html", stop=stop_name, zone=zone, tour_list=tour_list, time=time)
-        
-        
-
-
+ 
+ 
+ 
+ 
 if __name__ == "__main__":
     app.run(debug=True)
