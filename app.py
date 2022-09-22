@@ -1,5 +1,4 @@
 #heroku u good?
-#updated ztm api
  
 from flask import Flask, flash, redirect, session, url_for, render_template, request
 from datetime import date
@@ -23,7 +22,7 @@ def home():
         zone_list = []
         global zone_list_fix
         zone_list_fix = []
-        stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
+        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
             if data['zoneName'] != None:
@@ -46,7 +45,7 @@ def zone_site(zone):
         stops_list = []
         global stops_id_list
         stops_id_list = []
-        stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
+        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
  
  
@@ -69,7 +68,7 @@ def zone_site(zone):
         stop_code = str(stop_name[int(stop_len) - 2]) + str(stop_name[int(stop_len) - 1])
         stop = stop_name[:-3:]
  
-        stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
+        stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
         response_stops = loads(stops)
         for data in response_stops[today]['stops']:
             if str(data['stopName']).lower() == str(stop).lower() and str(data['zoneName']).lower() == str(zone).lower():
@@ -90,7 +89,7 @@ def schedule(stop, zone):
         time_hour = '00'
     time = str(time_hour) + str(time[2]) + str(time[3]) + str(time[4]) + str(time[5]) + str(time[6]) + str(time[7])
  
-    stops = get('http://91.244.248.30/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json').text
+    stops = get('https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/4c4025f0-01bf-41f7-a39f-d156d201b82b/download/stops.json').text
     response_stops = loads(stops)
     for data in response_stops[today]['stops']:
         if data['stopId'] == int(stop):
@@ -98,7 +97,7 @@ def schedule(stop, zone):
             stop_code = data['stopCode']
             stop_name = str(stop_name) + ' ' + str(stop_code)
  
-    routs = get('http://87.98.237.99:88/delays?stopId=' + str(stop)).text
+    routs = get('https://ckan2.multimediagdansk.pl/departures?stopId=' + str(stop)).text
     response_routs = loads(routs)
     objnum = 0
     tour_list = []
