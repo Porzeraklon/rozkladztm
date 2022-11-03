@@ -2,33 +2,27 @@
 
 <head>
 
-    <title>Rozklad</title>
+    <title>KLUCZ GRAL</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
-    <meta name="propeller" content="e159f6f39457136a57a831b6a04bb2e1">
-    <script>(function(d,z,s){s.src='//'+d+'/400/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('vooculok.com',5189198,document.createElement('script'))</script>
-
+    
 </head>
 
 
-<body class="body-choice">
-
+<body>
     <div class="grid-box">
         <form action="#" method="post">
-            <p class="form-choice">Przystanek:</p>
-            <p><input class="text-input" list="stop" name="stop"></p>
-            <datalist id="stop">
-            {% for stop in stops_list %}
-            <option value="{{stop}}">
-            {% endfor %}
-            </datalist>
-            <p><input type="submit" value="Wybierz" id="submit"></p>
-            {% for message in get_flashed_messages()%}
-            <p class="error">{{message}}</p>
-            {% endfor %}
+            <p>Lokalizacja klucza:</p>
+            <select class="slider" name="key_form">
+                <option value="Magazyn">Magazyn</option>
+                <option value="Biuro">Biuro</option>
+                <option value="Sklep">Sklep</option>
+                <option value="Kibel">Kibel</option>
+            </select>
+            <p class="form-choice"><input type="submit" value="Wybierz" id="submit"></p>
         </form>
+        <p>Klucz ostatnio widziany był:</p>
+        <p>{{location}}</p>
     </div>
-
 </body>
 
 </html>
