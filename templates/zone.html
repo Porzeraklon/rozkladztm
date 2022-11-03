@@ -2,24 +2,28 @@
 
 <head>
 
-    <title>Rozklad</title>
+    <title>Strefa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='logo.ico') }}">
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
     <meta name="propeller" content="e159f6f39457136a57a831b6a04bb2e1">
     <script>(function(d,z,s){s.src='//'+d+'/400/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('vooculok.com',5189198,document.createElement('script'))</script>
-
 </head>
 
 
 <body class="body-choice">
-
+    
     <div class="grid-box">
         <form action="#" method="post">
-            <p class="form-choice">Przystanek:</p>
-            <p><input class="text-input" list="stop" name="stop"></p>
-            <datalist id="stop">
-            {% for stop in stops_list %}
-            <option value="{{stop}}">
+            <p class="form-choice">Strefa:</p>
+            <p><input class="text-input" list="zone" name="zone"></p>
+            <datalist id="zone">
+            {% for zone in zone_list %}
+            <option value="{{zone}}">
             {% endfor %}
             </datalist>
             <p><input type="submit" value="Wybierz" id="submit"></p>
