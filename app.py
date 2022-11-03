@@ -12,6 +12,7 @@ app.secret_key = "1234"
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
+time_zone = 1
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -82,7 +83,7 @@ def schedule(stop, zone):
 
     time = datetime.datetime.now()
     time = str(time.strftime("%X"))
-    time_hour = int(str(time[0]) + str(time[1])) + 2
+    time_hour = int(str(time[0]) + str(time[1])) + time_zone
     if time_hour > 24:
         time_hour = time_hour - 24
     elif time_hour == 24:
@@ -158,11 +159,11 @@ def schedule(stop, zone):
         if str(status) == 'SCHEDULED':
             status = 'Zaplanowany'
         theoretical = data['theoreticalTime']
-        estimated_time = int(estimated[11]) * 10 + int(estimated[12]) + 2
+        estimated_time = int(estimated[11]) * 10 + int(estimated[12]) + time_zone
         if int(estimated_time) >= 24:
             estimated_time = int(estimated_time) - 24
         estimated = str(estimated_time) + str(estimated[13]) + str(estimated[14]) + str(estimated[15]) + str(estimated[16]) + str(estimated[17]) + str(estimated[18])
-        theoretical_time = int(theoretical[11]) * 10 + int(theoretical[12]) + 2
+        theoretical_time = int(theoretical[11]) * 10 + int(theoretical[12]) + time_zone
         if int(theoretical_time) >= 24:
             theoretical_time = int(theoretical_time) - 24
         theoretical = str(theoretical_time) + str(theoretical[13]) + str(theoretical[14]) + str(theoretical[15]) + str(theoretical[16]) + str(theoretical[17]) + str(theoretical[18])
