@@ -1,13 +1,17 @@
+#heroku u good?
+
 from flask import Flask, flash, redirect, session, url_for, render_template, request
 from datetime import date
-import datetime, notifications 
- 
+import datetime
+from requests import get
+from json import loads
+
+
 app = Flask(__name__)
 app.secret_key = "1234"
- 
+
 today = date.today()
 today = today.strftime("%Y-%m-%d")
-<<<<<<< HEAD
 time_zone = 1
 
 
@@ -178,19 +182,5 @@ def schedule(stop, zone):
         
 
 
-=======
- 
- 
-@app.route("/", methods=['POST', 'GET'])
-def home():
-    if request.method == 'GET':        
-        return render_template('index.html')
-    if request.method == 'POST':
-        location = request.form['key_form']
-        notifications.notify(location)
-        return render_template('index.html', location=location)
- 
- 
->>>>>>> 8c85fef199d249b05e4c4fc62ead9ab2614b07e2
 if __name__ == "__main__":
     app.run(debug=True)
